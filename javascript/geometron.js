@@ -100,13 +100,8 @@ function GVM2d(x0,y0,unit,theta0,canvas2d,width,height) {
         this._hypercube.push("0341,");
     }
     
-    this.drawGlyph = function(glyph,GVM2d) {
 
-        GVM2d._ctx.clearRect(0,0,GVM2d._width,GVM2d._height);
-        GVM2d._ctx.strokeStyle = GVM2d._style.color0;
-        GVM2d._ctx.fillStyle = GVM2d._style.fill0;
-        GVM2d._ctx.lineWidth = GVM2d._style.line0;
-
+    this.actionSequence = function(glyph,GVM2d) {
         var glyphArray = glyph.split(",");
         var actionSequence = [];
         for(var index = 0;index < glyphArray.length;index++){
@@ -117,12 +112,23 @@ function GVM2d(x0,y0,unit,theta0,canvas2d,width,height) {
         for(var index = 0;index < actionSequence.length;index++){
             GVM2d.action(actionSequence[index],GVM2d);
         }
+
+    }
+
+    this.drawGlyph = function(glyph,GVM2d) {
+
+        GVM2d._ctx.clearRect(0,0,GVM2d._width,GVM2d._height);
+        GVM2d._ctx.strokeStyle = GVM2d._style.color0;
+        GVM2d._ctx.fillStyle = GVM2d._style.fill0;
+        GVM2d._ctx.lineWidth = GVM2d._style.line0;
+
+        GVM2d.actionSequence(glyph,GVM2d);
     }
 
     this.action = function(address,GVM2d) {
         //02xx
-        if(address >= 0200 && address <= 02777){
-//            GVM2d.drawGlyph(GVM2d._hypercube[address],GVM2d)
+        if(address >= 0200 && address <= 0277){
+            GVM2d.actionSequence(GVM2d._hypercube[address],GVM2d);
         }
         //03xx
         if(address == 0300) {
