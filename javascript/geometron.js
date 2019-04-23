@@ -62,6 +62,21 @@ function GVM2d(x0,y0,unit,theta0,canvas2d,width,height) {
     this._scaleFactor = 2;
     this._thetaStep = Math.PI/2;
 
+    this._cpx1 = x0;
+    this._cpy1 = y0;
+    this._cpx2 = x0;
+    this._cpy2 = y0;
+    this._x1 = x0;
+    this._y1 = y0;
+    this._x2 = x0;
+    this._y2 = y0;
+    this._xOne = x0;
+    this._yOne = y0;
+    this._thetaOne = this._theta;
+    this._sideOne = this._side;
+    this._thetaStepOne = this._thetaStep;
+    this._scaleFactorOne = this._scaleFactor;
+ 
     this._style = {
         color0: "black",
         fill0: "black",
@@ -306,9 +321,68 @@ function GVM2d(x0,y0,unit,theta0,canvas2d,width,height) {
         if(address == 0360) {
             //first part of bezier in middle of a path
             GVM2d._ctx.moveTo(Math.round(GVM2d._x),Math.round(GVM2d._y));
+            GVM2d._cpx1 = Math.round(GVM2d._x + GVM2d._side*Math.cos(GVM2d._theta));
+            GVM2d._cpy1 = Math.round(GVM2d._y + GVM2d._side*Math.sin(GVM2d._theta));
+    
         }
         if(address == 0361) { 
-            
+            //second part of bezier in middle of a path
+            GVM2d._x2 = Math.round(GVM2d._x);
+            GVM2d._y2 = Math.round(GVM2d._y);
+            GVM2d._cpx2 = Math.round(GVM2d._x + GVM2d._side*Math.cos(GVM2d._theta));
+            GVM2d._cpy2 = Math.round(GVM2d._y + GVM2d._side*Math.sin(GVM2d._theta));
+            GVM2d._ctx.bezierCurveTo(GVM2d._cpx1,GVM2d._cpy1,GVM2d._cpx2,GVM2d._cpy2,GVM2d._x2,GVM2d._y2);
+            GVM2d._ctx.stroke();
+        }
+        if(address == 0362) {
+            //start a path
+            GVM2d._ctx.beginPath();
+            GVM2d._ctx.moveTo(GVM2d._x,GVM2d._y);
+        }
+        if(address == 0363) {
+            //terminate a closed path with fill
+            GVM2d._ctx.closePath();
+            GVM2d._ctx.stroke();		
+            GVM2d._ctx.fill();		            
+        }
+        if(address == 0364) {
+            GVM2d._ctx.closePath();
+        }
+        if(address == 0365) {
+  //          ctx.font=side.toString(8) + "px " + myFont;
+    //        ctx.fillText(currentWord,x,y);    
+        }
+        if(address == 0366) {
+            // start a self-contained cubic Bezier path        
+            GVM2d._ctx.beginPath();
+            GVM2d._ctx.moveTo(Math.round(GVM2d._x),Math.round(GVM2d._y));
+            GVM2d._cpx1 = Math.round(GVM2d._x + GVM2d._side*Math.cos(GVM2d._theta));
+            GVM2d._cpy1 = Math.round(GVM2d._y + GVM2d._side*Math.sin(GVM2d._theta)); 
+        }
+        if(address == 0367) {
+            // finish a self-contained cubic Bezier path
+            GVM2d._x2 = Math.round(GVM2d._x);
+            GVM2d._y2 = Math.round(GVM2d._y);
+            GVM2d._cpx2 = Math.round(GVM2d._x + GVM2d._side*Math.cos(GVM2d._theta));
+            GVM2d._cpy2 = Math.round(GVM2d._y + GVM2d._side*Math.sin(GVM2d._theta));
+            GVM2d._ctx.bezierCurveTo(GVM2d._cpx1,GVM2d._cpy1,GVM2d._cpx2,GVM2d._cpy2,GVM2d._x2,GVM2d._y2);
+            GVM2d._ctx.stroke();
+        }
+        if(address == 0370) {
+            GVM2d._xOne = GVM2d._x;
+            GVM2d._yOne = GVM2d._y;
+            GVM2d._thetaOne = GVM2d._theta;
+            GVM2d._sideOne = GVM2d._side;
+            GVM2d._thetaStepOne = GVM2d._thetaStep;
+            GVM2d._scaleFactorOne = GVM2d._scaleFactor;
+        }
+        if(address == 0371) {
+            GVM2d._x = GVM2d._xOne;
+            GVM2d._y = GVM2d._yOne;
+            GVM2d._theta = GVM2d._thetaOne;
+            GVM2d._side = GVM2d._sideOne;
+            GVM2d._thetaStep = GVM2d._thetaStepOne;
+            GVM2d._scaleFactor = GVM2d._scaleFactorOne;    
         }
     }
 }
