@@ -42,9 +42,15 @@ A Geometron is a geometric virtual machine which has two 8x8x8 cubes of operatio
 
 //this needs to get passed a context for a canvas.  It should know the size and shape of that canvas,
 //and will create a string with the SVG code for the same vector graphics of the same size and shape as it goes 
-function GVM2d(x0,y0,unit,theta0,ctx) {
-    this._ctx = ctx;//context2d of a canvas
-
+//function GVM2d(x0,y0,unit,theta0,ctx) {
+function GVM2d(x0,y0,unit,theta0,canvas2d,width,height) {
+    this._width = width;
+    this._height = height;
+    canvas2d.width = width;
+    canvas2d.height = height;
+//    this._ctx = ctx;//context2d of a canvas
+    this._ctx = canvas2d.getContext("2d");
+ 
     this._x0 = x0;
     this._x = x0;
     this._y0 = y0;
@@ -95,6 +101,8 @@ function GVM2d(x0,y0,unit,theta0,ctx) {
     }
     
     this.drawGlyph = function(glyph,GVM2d) {
+
+        GVM2d._ctx.clearRect(0,0,GVM2d._width,GVM2d._height);
         GVM2d._ctx.strokeStyle = GVM2d._style.color0;
         GVM2d._ctx.fillStyle = GVM2d._style.fill0;
         GVM2d._ctx.lineWidth = GVM2d._style.line0;
@@ -224,23 +232,23 @@ function GVM2d(x0,y0,unit,theta0,ctx) {
         }
     
         if(address == 0340) {
-            ctx.beginPath();
-            ctx.arc(GVM2d._x, GVM2d._y, ctx.lineWidth, 0, 2 * Math.PI);
-            ctx.fill();	
-            ctx.closePath();
+            GVM2d._ctx.beginPath();
+            GVM2d._ctx.arc(GVM2d._x, GVM2d._y, GVM2d._ctx.lineWidth, 0, 2 * Math.PI);
+            GVM2d._ctx.fill();	
+            GVM2d._ctx.closePath();
         }
         if(address == 0341) {
-            ctx.beginPath();
-            ctx.arc(GVM2d._x, GVM2d._y, GVM2d._side, 0, 2 * Math.PI);
-            ctx.closePath();
-            ctx.stroke();   
+            GVM2d._ctx.beginPath();
+            GVM2d._ctx.arc(GVM2d._x, GVM2d._y, GVM2d._side, 0, 2 * Math.PI);
+            GVM2d._ctx.closePath();
+            GVM2d._ctx.stroke();   
         }
         if(address == 0342) {
-            ctx.beginPath();
-            ctx.moveTo(GVM2d._x,GVM2d._y);
-            ctx.lineTo(GVM2d._x + GVM2d._side*Math.cos(GVM2d._theta),GVM2d._y + GVM2d._side*Math.sin(GVM2d._theta));
-            ctx.stroke();		
-            ctx.closePath();    
+            GVM2d._ctx.beginPath();
+            GVM2d._ctx.moveTo(GVM2d._x,GVM2d._y);
+            GVM2d._ctx.lineTo(GVM2d._x + GVM2d._side*Math.cos(GVM2d._theta),GVM2d._y + GVM2d._side*Math.sin(GVM2d._theta));
+            GVM2d._ctx.stroke();		
+            GVM2d._ctx.closePath();    
         }
 
 
