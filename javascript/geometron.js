@@ -38,25 +38,23 @@ A Geometron is a geometric virtual machine which has two 8x8x8 cubes of operatio
     */
 
 
-function Geometron(hypercubesource) {
-    /*construct a geometron instance, which has
-          a hypercube  
-          a target spelling canvas 
-          a target 2d canvas
-          a target 3d canvas
-          a current glyph to draw 
-          a current style object for 3d
-          a current style object for spelling
-          a current style object for 2d drawing
-    */
-    this.hypercubesource = hypercubesource;//path where bytecode is located
-    this.currentGlyph = "";
-    this.hypercube = Hypercube(hypercubesource);
-    //
-}
+    
 
-function StyleObject(){
+//this needs to get passed a context for a canvas.  It should know the size and shape of that canvas,
+//and will create a string with the SVG code for the same vector graphics of the same size and shape as it goes 
+function GVM2d(x0,y0,unit,theta0,ctx) {
+    this._ctx = ctx;//context2d of a canvas
 
+    this._x0 = x0;
+    this._x = x0;
+    this._y0 = y0;
+    this._y = y0;
+    this._unit = unit;
+    this._side = unit;
+    this._theta0 = theta0;
+    this._theta = theta0;
+    this._scaleFactor = 2;
+    this._thetaStep = Math.PI/2;
 
     this._style = {
         color0: "black",
@@ -83,22 +81,13 @@ function StyleObject(){
         color7: "purple",
         fill7: "purple",
         line7: 1
-    }
-}
+    };
+    this._strokeStyle = this._style.color0;
+    this._fillStyle = this._style.fill0;
+    this._lineWidth = this._style.line0;
 
-//this needs to get passed a context for a canvas.  It should know the size and shape of that canvas,
-//and will create a string with the SVG code for the same vector graphics of the same size and shape as it goes 
-function GVM2d(x0,y0,unit,theta0,ctx) {
-    this._x0 = x0;
-    this._x = x0;
-    this._y0 = y0;
-    this._y = y0;
-    this._unit = unit;
-    this._side = unit;
-    this._theta0 = theta0;
-    this._theta = theta0;
-    this._scaleFactor = 2;
-    this._thetaStep = Math.PI/2;
+    this.svgString = "";
+
 
     this._hypercube = [];
     for(var index = 0;index < 1024;index++){
@@ -106,6 +95,10 @@ function GVM2d(x0,y0,unit,theta0,ctx) {
     }
     
     this.drawGlyph = function(glyph,GVM2d) {
+        GVM2d._ctx.strokeStyle = GVM2d._style.color0;
+        GVM2d._ctx.fillStyle = GVM2d._style.fill0;
+        GVM2d._ctx.lineWidth = GVM2d._style.line0;
+
         var glyphArray = glyph.split(",");
         var actionSequence = [];
         for(var index = 0;index < glyphArray.length;index++){
@@ -160,6 +153,46 @@ function GVM2d(x0,y0,unit,theta0,ctx) {
         if(address == 0316) {
             GVM2d._scaleFactor = 5;
         }
+        if(address == 0320) {
+            GVM2d._ctx.strokeStyle = GVM2d._style.color0;
+            GVM2d._ctx.fillStyle = GVM2d._style.fill0;
+            GVM2d._ctx.lineWidth = GVM2d._style.line0;    
+        }
+        if(address == 0321) {
+            GVM2d._ctx.strokeStyle = GVM2d._style.color1;
+            GVM2d._ctx.fillStyle = GVM2d._style.fill1;
+            GVM2d._ctx.lineWidth = GVM2d._style.line1;    
+        }
+        if(address == 0322) {
+            GVM2d._ctx.strokeStyle = GVM2d._style.color2;
+            GVM2d._ctx.fillStyle = GVM2d._style.fill2;
+            GVM2d._ctx.lineWidth = GVM2d._style.line2;    
+        }
+        if(address == 0323) {
+            GVM2d._ctx.strokeStyle = GVM2d._style.color3;
+            GVM2d._ctx.fillStyle = GVM2d._style.fill3;
+            GVM2d._ctx.lineWidth = GVM2d._style.line3;    
+        }
+        if(address == 0324) {
+            GVM2d._ctx.strokeStyle = GVM2d._style.color4;
+            GVM2d._ctx.fillStyle = GVM2d._style.fill4;
+            GVM2d._ctx.lineWidth = GVM2d._style.line4;    
+        }
+        if(address == 0325) {
+            GVM2d._ctx.strokeStyle = GVM2d._style.color5;
+            GVM2d._ctx.fillStyle = GVM2d._style.fill5;
+            GVM2d._ctx.lineWidth = GVM2d._style.line5;    
+        }
+        if(address == 0326) {
+            GVM2d._ctx.strokeStyle = GVM2d._style.color6;
+            GVM2d._ctx.fillStyle = GVM2d._style.fill6;
+            GVM2d._ctx.lineWidth = GVM2d._style.line6;    
+        }
+        if(address == 0327) {
+            GVM2d._ctx.strokeStyle = GVM2d._style.color7;
+            GVM2d._ctx.fillStyle = GVM2d._style.fill7;
+            GVM2d._ctx.lineWidth = GVM2d._style.line7;    
+        }
 
         if(address == 0330) {
             GVM2d._x += GVM2d._side*Math.cos(GVM2d._theta);
@@ -201,8 +234,6 @@ function GVM2d(x0,y0,unit,theta0,ctx) {
             ctx.arc(GVM2d._x, GVM2d._y, GVM2d._side, 0, 2 * Math.PI);
             ctx.closePath();
             ctx.stroke();   
-            console.log(GVM2d._x);
-
         }
         if(address == 0342) {
             ctx.beginPath();
