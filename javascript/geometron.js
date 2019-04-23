@@ -43,7 +43,8 @@ A Geometron is a geometric virtual machine which has two 8x8x8 cubes of operatio
 //this needs to get passed a context for a canvas.  It should know the size and shape of that canvas,
 //and will create a string with the SVG code for the same vector graphics of the same size and shape as it goes 
 //function GVM2d(x0,y0,unit,theta0,ctx) {
-function GVM2d(x0,y0,unit,theta0,canvas2d,width,height) {
+function GVM2d(x0,y0,unit,theta0,canvas2d,width,height,bytecode) {
+    
     this._width = width;
     this._height = height;
     canvas2d.width = width;
@@ -114,7 +115,14 @@ function GVM2d(x0,y0,unit,theta0,canvas2d,width,height) {
     for(var index = 0;index < 1024;index++){
         this._hypercube.push("0341,");
     }
-    
+
+    for(var index =0;index < bytecode.length;index++){
+        if(hypercube[index].length > 1){
+            var localaddress = parseInt(hypercube[index].split(":")[0],8);
+            var localglyph = hypercube[index].split(":")[1];
+            this._hypercube[localaddress] = localglyph;
+        }
+    }
 
     this.actionSequence = function(glyph,GVM2d) {
         var glyphArray = glyph.split(",");
@@ -136,13 +144,13 @@ function GVM2d(x0,y0,unit,theta0,canvas2d,width,height) {
         GVM2d._ctx.strokeStyle = GVM2d._style.color0;
         GVM2d._ctx.fillStyle = GVM2d._style.fill0;
         GVM2d._ctx.lineWidth = GVM2d._style.line0;
-
         GVM2d.actionSequence(glyph,GVM2d);
+        
     }
 
     this.action = function(address,GVM2d) {
         //02xx
-        if(address >= 0200 && address <= 0277){
+        if( (address >= 0200 && address <= 0277) || (address >= 01000 && address <= 01777) ){
             GVM2d.actionSequence(GVM2d._hypercube[address],GVM2d);
         }
         //03xx

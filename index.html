@@ -1,5 +1,6 @@
 <html>
 <head>
+    <script src="javascript/hypercube.js"></script>
     <script src="javascript/geometron.js"></script>
 </head>
 <body>    
@@ -9,8 +10,8 @@
 
 //GVM2d(x0,y0,unit,theta0,canvas2d,width,height)
 
-var newGVM = new GVM2d(100,100,50,-Math.PI/2,document.getElementById("maincanvas"),200,200);
-newGVM.drawGlyph("0341,0342,0322,0336,0332,0337,0341,0340,0333,0327,0341,0340,0342,0336,0200,0336,0245,",newGVM);
+var newGVM = new GVM2d(10,100,50,-Math.PI/2,document.getElementById("maincanvas"),200,200,hypercube);
+newGVM.drawGlyph("01330,01330,01330,",newGVM);
 
 </script>
 <style>
