@@ -17,17 +17,18 @@ ctx.strokeStyle= "black";
 ctx.fillStyle = "black";
 ctx.lineWidth = 3;    	
 
-var newGVM = new GVM2d(101,102,53,-Math.PI/2,ctx);
+var newGVM = new GVM2d(100,100,50,-Math.PI/2,ctx);
 
+/*
+newGVM.action(0336,newGVM);
+newGVM.action(0332,newGVM);
+newGVM.action(0337,newGVM);
 newGVM.action(0341,newGVM);
+newGVM.action(0333,newGVM);
+newGVM.action(0341,newGVM);
+*/
 
-//newGVM.drawGlyph("0336,0332,0337,0341,0333,0341,");
-
-
-            ctx.beginPath();
-            ctx.arc(40, 40,20, 0, 2 * Math.PI);
-            ctx.closePath();
-            ctx.stroke();   
+newGVM.drawGlyph("0336,0332,0337,0341,0333,0341,",newGVM);
 
 </script>
 <style>

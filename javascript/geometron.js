@@ -24,6 +24,7 @@ A Geometron is a geometric virtual machine which has two 8x8x8 cubes of operatio
          040-0176: keyboard actions, each of which maps to some other action/operation 
          0177: do nothing
          0200-0277: shape table, which is all programs/sequences/glyphs
+         0207: cursor, which has special properties which affect editign of glyphs
          0300-0377: 2d geometric actions
          0400-0477: unused
          0500-0577: unused
@@ -93,24 +94,42 @@ function GVM2d(x0,y0,unit,theta0,ctx) {
     this._y0 = y0;
     this._y = y0;
     this._unit = unit;
+    this._side = unit;
     this._theta0 = theta0;
     this._theta = theta0;
     this._scaleFactor = 2;
     this._thetaStep = Math.PI/2;
 
+    this._hypercube = [];
+    for(var index = 0;index < 1024;index++){
+        this._hypercube.push("0341,");
+    }
     
-    this.sequence = function(sequence,GVM2d) {
-        //sequence is an array of ints, which can get fed into actions as the address
+    this.drawGlyph = function(glyph,GVM2d) {
+        var glyphArray = glyph.split(",");
+        var actionSequence = [];
+        for(var index = 0;index < glyphArray.length;index++){
+            if(glyphArray[index].length > 1){
+                actionSequence.push(parseInt(glyphArray[index],8));
+            }
+        }
+        for(var index = 0;index < actionSequence.length;index++){
+            GVM2d.action(actionSequence[index],GVM2d);
+        }
     }
 
     this.action = function(address,GVM2d) {
+        //02xx
+        if(address >= 0200 && address <= 02777){
+//            GVM2d.drawGlyph(GVM2d._hypercube[address],GVM2d)
+        }
         //03xx
         if(address == 0300) {
-            GVM2d._x = GVM2d.x0;
-            GVM2d._y = GVM2d.y0;
-            GVM2d._side = GVM2d.unit;
+            GVM2d._x = GVM2d._x0;
+            GVM2d._y = GVM2d._y0;
+            GVM2d._side = GVM2d._unit;
             GVM2d._thetaStep = Math.PI/2;
-            GVM2d._theta = GVM2d.theta0;
+            GVM2d._theta = GVM2d._theta0;
             GVM2d._scaleFactor = 2;       
         }
         if(address == 0304) {
@@ -159,16 +178,16 @@ function GVM2d(x0,y0,unit,theta0,ctx) {
             GVM2d._y += GVM2d._side*Math.sin(GVM2d._theta + GVM2d._thetaStep);    
         }
         if(address == 0334) {
-            GVM2d.theta -= GVM2d.thetaStep; // CCW
+            GVM2d._theta -= GVM2d._thetaStep; // CCW
         }
         if(address == 0335) {
-            GVM2d.theta += GVM2d.thetaStep; // CW
+            GVM2d._theta += GVM2d._thetaStep; // CW
         }
         if(address == 0336) {
-            GVM2d.side /= GVM2d.scaleFactor; // -
+            GVM2d._side /= GVM2d._scaleFactor; // -
         }
         if(address == 0337) {
-            GVM2d.side *= GVM2d.scaleFactor; // +
+            GVM2d._side *= GVM2d._scaleFactor; // +
         }
     
         if(address == 0340) {
