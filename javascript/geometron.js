@@ -256,8 +256,60 @@ function GVM2d(x0,y0,unit,theta0,canvas2d,width,height) {
             GVM2d._ctx.stroke();		
             GVM2d._ctx.closePath();    
         }
-
-
+        if(address == 0343) {
+            //arc
+            GVM2d._ctx.beginPath();
+            GVM2d._ctx.arc(GVM2d._x, GVM2d._y, GVM2d._side, GVM2d._theta - GVM2d._thetaStep,GVM2d._theta + GVM2d._thetaStep);
+            GVM2d._ctx.stroke();
+            GVM2d._ctx.closePath();
+        }
+        if(address == 0344) {
+            //line segment as part of path
+            GVM2d._ctx.lineTo(GVM2d._x + GVM2d._side*Math.cos(GVM2d._theta),GVM2d._y + GVM2d._side*Math.sin(GVM2d._theta));
+            GVM2d._ctx.stroke();		
+        }
+        if(address == 0345) {
+            //arc as part of path, to the right (CW)
+            GVM2d._ctx.arc(GVM2d._x, GVM2d._y, GVM2d._side, GVM2d._theta - GVM2d._thetaStep,GVM2d._theta + GVM2d._thetaStep);
+            GVM2d._ctx.stroke();
+        }
+        if(address == 0346) {
+            //arc, reverse direction (CCW)
+            GVM2d._ctx.arc(GVM2d._x, GVM2d._y, GVM2d._side, GVM2d._theta + GVM2d._thetaStep,GVM2d._theta - GVM2d._thetaStep,true);
+            GVM2d._ctx.stroke();   
+        }
+        if(address == 0347) {
+            //filled circle
+            GVM2d._ctx.beginPath();
+            GVM2d._ctx.arc(GVM2d._x, GVM2d._y, GVM2d._side, 0, 2 * Math.PI);
+            GVM2d._ctx.closePath();
+            GVM2d._ctx.stroke();
+            GVM2d._ctx.fill();
+        }
+        if(address == 0350) {
+            GVM2d._thetaStep /= 2;  //angle/2
+        }
+        if(address == 0351) {
+            GVM2d._thetaStep *= 2;  //angle/2
+        }
+        if(address == 0352) {
+            GVM2d._thetaStep /= 3;  //angle/2
+        }
+        if(address == 0353) {
+            GVM2d._thetaStep *= 3;  //angle/2
+        }
+        if(address == 0354) {
+            //end a closed but not filled path
+            GVM2d._ctx.closePath();
+            GVM2d._ctx.stroke();		
+        }
+        if(address == 0360) {
+            //first part of bezier in middle of a path
+            GVM2d._ctx.moveTo(Math.round(GVM2d._x),Math.round(GVM2d._y));
+        }
+        if(address == 0361) { 
+            
+        }
     }
 }
 
