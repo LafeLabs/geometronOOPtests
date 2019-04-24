@@ -26,8 +26,11 @@ A Geometron is a geometric virtual machine which has two 8x8x8 cubes of operatio
          0200-0277: shape table, which is all programs/sequences/glyphs
          0207: cursor, which has special properties which affect editign of glyphs
          0300-0377: 2d geometric actions
+
          0400-0477: unused
          0500-0577: unused
+         unused space can be JSON structures, urls of links and images, links to other addresses in the hypercube, physicsl robotic actions
+
          0600-0677: 3d shapes, bytecode which references 3d actions
          0700-0777: 3d geometric actions, combined with actions on geometric variables of quantum states in higher dimensions
 
@@ -35,12 +38,48 @@ A Geometron is a geometric virtual machine which has two 8x8x8 cubes of operatio
 
     */
 
-function ActionInput(input,GVM2d) {
 
+function ActionInput(input,drawGVM,spellGVM) {
+    this._glyph = drawGVM._glyph + "0207,";
+
+    drawGVM.drawGlyph(this._glyph,drawGVM);
+    spellGVM.spellGlyph(this._glyph,spellGVM);
+    
+    var glyph = this._glyph;
+    input.onkeydown = function(e,glyph,drawGVM,spellGVM){
+
+        var charCode = e.keyCode || e.which;
+        if(charCode == 010){
+            //delete
+            var bottomGlyph = glyph.split("0207")[0];   
+            var topGlyph = glyph.split("0207")[1]; 
+            var glyphSplit = bottomGlyph.split(",");
+            glyph = "";
+            for(var index = 0;index < glyphSplit.length - 2;index++){
+                if(glyphSplit[index].length > 0){
+                    glyph += glyphSplit[index] + ",";
+                }
+            }
+            glyph += "0207,";
+            glyph += topGlyph;
+            glyphSplit = glyph.split(",");
+            glyph = "";
+            for(var index = 0;index < glyphSplit.length;index++){
+                if(glyphSplit[index].length > 0){
+                    glyph += glyphSplit[index] + ",";
+                }
+            }
+            
+            drawGVM.drawGlyph(glyph,drawGVM);
+            spellGVM.spellGlyph(glyph,spellGVM);
+        
+        }
+
+    }
 }
     
 function GVM2d(x0,y0,unit,theta0,canvas2d,width,height,bytecode) {
-    
+    this._glyph = "";
     this._width = width;
     this._height = height;
     canvas2d.width = width;
@@ -103,6 +142,7 @@ function GVM2d(x0,y0,unit,theta0,canvas2d,width,height,bytecode) {
     this._fillStyle = this._style.fill0;
     this._lineWidth = this._style.line0;
 
+    GVM2d._viewStep = 50;
     this.svgString = "";
 
 
@@ -134,21 +174,23 @@ function GVM2d(x0,y0,unit,theta0,canvas2d,width,height,bytecode) {
     }
 
     this.drawGlyph = function(glyph,GVM2d) {
-
+        GVM2d._glyph = glyph;
         GVM2d._ctx.clearRect(0,0,GVM2d._width,GVM2d._height);
         GVM2d._ctx.strokeStyle = GVM2d._style.color0;
         GVM2d._ctx.fillStyle = GVM2d._style.fill0;
         GVM2d._ctx.lineWidth = GVM2d._style.line0;
+        GVM2d.action(0300,GVM2d);
         GVM2d.actionSequence(glyph,GVM2d);
         
     }
 
     this.spellGlyph = function(glyph,GVM2d) {
+        GVM2d._glyph = glyph;
         var localGlyph = "";
         var glyphArray = glyph.split(",");
         for(var index = 0; index < glyphArray.length; index++){
             if(glyphArray[index].length > 1){
-                var localAddress = parseInt(glyphArray,8);
+                var localAddress = parseInt(glyphArray[index],8);
                 if(localAddress < 01000){
                     localAddress += 01000;
                 }
@@ -156,8 +198,9 @@ function GVM2d(x0,y0,unit,theta0,canvas2d,width,height,bytecode) {
             }
         }
         glyph = localGlyph;
+        GVM2d._glyph = glyph;
         GVM2d._canvas2d.height = GVM2d._unit + 2;
-        GVM2d._canvas2d.width = GVM2d._unit*(glyphArray.length - 1) + 4;
+        GVM2d._canvas2d.width = GVM2d._unit*(glyphArray.length) + 4;
         GVM2d._height = GVM2d._unit + 2;
         GVM2d._x0 = 1;
         GVM2d._y0 = GVM2d._unit +1;
@@ -171,7 +214,85 @@ function GVM2d(x0,y0,unit,theta0,canvas2d,width,height,bytecode) {
         
     }
 
+    this.cursorAction = function(action,GVM2d) {           
+        //2d cursor is at address 0207, glyph cursor is therefore at 01207
+        var currentGlyph = GVM2d._glyph;
+        if(action > 037 && action <= 01777) {
+            var glyphSplit = currentGlyph.split(",");
+            currentGlyph = "";
+            for(var index = 0;index < glyphSplit.length;index++){
+                if(glyphSplit[index].length > 0 && glyphSplit[index] != "0207"){
+                    currentGlyph += glyphSplit[index] + ",";
+                }
+                if(glyphSplit[index] == "0207"){
+                    currentGlyph += "0" + action.toString(8) + ",0207,";
+                }
+            }
+            var glyphSplit = currentGlyph.split(",");
+            currentGlyph = "";
+            for(var index = 0;index < glyphSplit.length;index++){
+                if(glyphSplit[index].length > 0  && parseInt(glyphSplit[index]) >= 040){
+                    currentGlyph += glyphSplit[index] + ",";
+                }
+            }
+        }
+        GVM2d._glyph = currentGlyph; 
+        GVM2d.drawGlyph(GVM2d._glyph,GVM2d);
+
+    }
+
     this.action = function(address,GVM2d) {
+        if(address == 010) {
+            //delete
+        }        
+        if(address == 020) {
+            //cursor back
+        }        
+        if(address == 021) {
+            //cursor fwd
+        }        
+        if(address == 022) {
+            //next glyph in table
+        }        
+        if(address == 023) {
+            //previous glyph in table
+        }        
+        if(address == 024) {
+            //spell to draw, draw to spell
+        }        
+        if(address == 030) {
+            GVM2d._y0 -= GVM2d._viewStep;
+        }        
+        if(address == 031) {
+            GVM2d._y0 += GVM2d._viewStep;
+        }        
+        if(address == 032) {
+            GVM2d._x0 -= GVM2d._viewStep;
+        }        
+        if(address == 033) {
+            GVM2d._x0 += GVM2d._viewStep;
+        }        
+        if(address == 034) {
+            GVM2d._theta0 -= Math.PI/10;
+        }        
+        if(address == 035) {
+            GVM2d._theta0 += Math.PI/10;
+        }        
+        if(address == 036) {
+            
+            GVM2d._unit /= 1.1; 
+            GVM2d._x0 = 0.5*GVM2d._width + (GVM2d._x0 - 0.5*GVM2d._width)/1.1;
+            GVM2d._y0 = 0.5*GVM2d._height + (GVM2d._y0 - 0.5*GVM2d._height)/1.1;
+    
+        }        
+        if(address == 037) {
+            GVM2d._unit *= 1.1; 
+            GVM2d._x0 = 0.5*GVM2d._width + (GVM2d._x0 - 0.5*GVM2d._width)*1.1;
+            GVM2d._y0 = 0.5*GVM2d._height + (GVM2d._y0 - 0.5*GVM2d._height)*1.1;
+
+        }        
+
+
         //02xx
         if( (address >= 0200 && address <= 0277) || (address >= 01000 && address <= 01777) ){
             GVM2d.actionSequence(GVM2d._hypercube[address],GVM2d);
