@@ -1,22 +1,32 @@
 <html>
 <head>
-    <script src="javascript/hypercube.js"></script>
     <script src="javascript/geometron.js"></script>
+<!--    <script src="https://pastebin.com/raw/7fvF1seM"></script>-->
 </head>
 <body>    
+    <input id = "actioninput"/>
     <canvas id = "maincanvas"></canvas>
+    <canvas id = "spellcanvas"></canvas>
 <script>
 
-
-//GVM2d(x0,y0,unit,theta0,canvas2d,width,height)
+document.getElementById("actioninput").select();
 
 var newGVM = new GVM2d(10,100,50,-Math.PI/2,document.getElementById("maincanvas"),200,200,hypercube);
-newGVM.drawGlyph("01330,01330,01330,",newGVM);
+newGVM.drawGlyph("01330,01330,01330,0300,0333,0333,0336,0231,",newGVM);
+
+var spellGVM = new GVM2d(10,100,50,-Math.PI/2,document.getElementById("spellcanvas"),200,200,hypercube);
+spellGVM.spellGlyph("0330,0331,0332,0333,0330,0331,0332,0333,0330,0331,0332,0333,0330,0331,0332,0333,0330,0331,0332,0333,",spellGVM);
 
 </script>
 <style>
 #maincanvas{
     border:solid;
+}
+#spellcanvas{
+    border:solid;
+}
+#actioninput{
+    width:1em;
 }
 </style>
 </body>
