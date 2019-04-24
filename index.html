@@ -13,7 +13,7 @@
 //GVM2d(x0,y0,unit,theta0,canvas2d,width,height,bytecode)
 
 var newGVM = new GVM2d(200,200,50,-Math.PI/2,document.getElementById("maincanvas"),400,400,hypercube);
-newGVM.drawGlyph("0200,0207,",newGVM);
+newGVM.drawGlyph("0200,0333,0341,0207,",newGVM);
 
 var spellGVM = new GVM2d(10,100,50,-Math.PI/2,document.getElementById("spellcanvas"),200,200,hypercube);
 
@@ -25,13 +25,31 @@ spellGVM.spellGlyph(newGVM._glyph,spellGVM);
 //newGVM.cursorAction(0341,newGVM);   
 //spellGVM.spellGlyph(newGVM._glyph,spellGVM);
 
+document.getElementById("actioninput").onkeydown = function(a) {
+    var charCode = a.keyCode || a.which;
+
+    if(charCode == 010) {
+        newGVM.cursorAction(010,newGVM);   
+    }
+    if(charCode == 045){
+        newGVM.cursorAction(020,newGVM);             
+    }
+    if(charCode == 047){
+        newGVM.cursorAction(021,newGVM);   
+    }
+
+    spellGVM.spellGlyph(newGVM._glyph,spellGVM);    
+
+}
 
 document.getElementById("actioninput").onkeypress = function(a) {
     var charCode = a.keyCode || a.which;
     var localCursorAction = parseInt(newGVM._hypercube[charCode],8);     
     newGVM.cursorAction(localCursorAction,newGVM);   
     spellGVM.spellGlyph(newGVM._glyph,spellGVM);    
+    this.value = "";
 }
+
 
 document.getElementById("actioninput").select();
 

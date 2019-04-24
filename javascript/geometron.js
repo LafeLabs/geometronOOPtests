@@ -217,6 +217,9 @@ function GVM2d(x0,y0,unit,theta0,canvas2d,width,height,bytecode) {
     this.cursorAction = function(action,GVM2d) {           
         //2d cursor is at address 0207, glyph cursor is therefore at 01207
         var currentGlyph = GVM2d._glyph;
+        if(action < 040) {
+            GVM2d.action(action,GVM2d);
+        }
         if(action > 037 && action <= 01777) {
             var glyphSplit = currentGlyph.split(",");
             currentGlyph = "";
@@ -235,8 +238,8 @@ function GVM2d(x0,y0,unit,theta0,canvas2d,width,height,bytecode) {
                     currentGlyph += glyphSplit[index] + ",";
                 }
             }
+            GVM2d._glyph = currentGlyph; 
         }
-        GVM2d._glyph = currentGlyph; 
         GVM2d.drawGlyph(GVM2d._glyph,GVM2d);
 
     }
@@ -244,6 +247,24 @@ function GVM2d(x0,y0,unit,theta0,canvas2d,width,height,bytecode) {
     this.action = function(address,GVM2d) {
         if(address == 010) {
             //delete
+            var bottomGlyph = GVM2d._glyph.split("0207")[0];   
+            var topGlyph = GVM2d._glyph.split("0207")[1]; 
+            var glyphSplit = bottomGlyph.split(",");
+            GVM2d._glyph = "";
+            for(var index = 0;index < glyphSplit.length - 2;index++){
+                if(glyphSplit[index].length > 0){
+                    GVM2d._glyph += glyphSplit[index] + ",";
+                }
+            }
+            GVM2d._glyph += "0207,";
+            GVM2d._glyph += topGlyph;
+            glyphSplit = GVM2d._glyph.split(",");
+            GVM2d._glyph = "";
+            for(var index = 0;index < glyphSplit.length;index++){
+                if(glyphSplit[index].length > 0){
+                    GVM2d._glyph += glyphSplit[index] + ",";
+                }
+            }
         }        
         if(address == 020) {
             //cursor back
