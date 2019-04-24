@@ -18,12 +18,7 @@ newGVM.drawGlyph("0200,0333,0341,0207,",newGVM);
 var spellGVM = new GVM2d(10,100,50,-Math.PI/2,document.getElementById("spellcanvas"),200,200,hypercube);
 
 spellGVM.spellGlyph(newGVM._glyph,spellGVM);
-//var actionInput = new ActionInput(document.getElementById("actioninput"),newGVM,spellGVM);
 
-
-//newGVM.cursorAction(0333,newGVM);   
-//newGVM.cursorAction(0341,newGVM);   
-//spellGVM.spellGlyph(newGVM._glyph,spellGVM);
 
 document.getElementById("actioninput").onkeydown = function(a) {
     var charCode = a.keyCode || a.which;

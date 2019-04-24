@@ -268,9 +268,61 @@ function GVM2d(x0,y0,unit,theta0,canvas2d,width,height,bytecode) {
         }        
         if(address == 020) {
             //cursor back
+            var currentGlyph = GVM2d._glyph;
+            var bottomGlyph = currentGlyph.split("0207")[0];   
+            var topGlyph = currentGlyph.split("0207")[1]; 
+            glyphSplit = bottomGlyph.split(",");
+            if(bottomGlyph.length == 0){
+                currentGlyph = topGlyph + "0207,";
+            }
+            else{
+                currentGlyph = "";
+                for(var index = 0;index < glyphSplit.length - 2;index++){
+                    if(glyphSplit[index].length > 0){
+                        currentGlyph += glyphSplit[index] + ",";
+                    }
+                }
+                currentGlyph += "0207,";
+                currentGlyph += glyphSplit[glyphSplit.length - 2];
+                currentGlyph += topGlyph;
+            }
+            glyphSplit = currentGlyph.split(",");
+            currentGlyph = "";
+            for(var index = 0;index < glyphSplit.length;index++){
+                if(glyphSplit[index].length > 0){
+                    currentGlyph += glyphSplit[index] + ",";
+                }
+            }
+            GVM2d._glyph = currentGlyph;
         }        
         if(address == 021) {
             //cursor fwd
+            var currentGlyph = GVM2d._glyph;
+            var bottomGlyph = currentGlyph.split("0207")[0];   
+            var topGlyph = currentGlyph.split("0207")[1]; 
+            if(topGlyph == ","){
+                currentGlyph = "0207," + bottomGlyph;
+            }
+            else{
+                glyphSplit = topGlyph.split(",");
+                currentGlyph = bottomGlyph + ",";
+                currentGlyph += glyphSplit[1] + ",";
+                currentGlyph += "0207,";
+                for(var index = 2;index < glyphSplit.length - 1;index++){
+                    if(glyphSplit[index].length > 0){
+                        currentGlyph += glyphSplit[index] + ",";
+                    }
+                }
+            }
+            glyphSplit = currentGlyph.split(",");
+            currentGlyph = "";
+            for(var index = 0;index < glyphSplit.length;index++){
+                if(glyphSplit[index].length > 0){
+                    currentGlyph += glyphSplit[index] + ",";
+                }
+            }
+            GVM2d._glyph = currentGlyph;
+
         }        
         if(address == 022) {
             //next glyph in table
