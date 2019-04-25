@@ -614,8 +614,15 @@ function GVM2d(x0,y0,unit,theta0,canvas2d,width,height,bytecode) {
             GVM2d._ctx.closePath();
         }
         if(address == 0365) {
+            GVM2d._ctx.translate(GVM2d._x, GVM2d._y);
+            GVM2d._ctx.rotate(-GVM2d._theta0 + GVM2d._theta);
+            GVM2d._ctx.translate(-GVM2d._x, -GVM2d._y);
             GVM2d._ctx.font = GVM2d._side.toString(8) + "px " + GVM2d._font;
             GVM2d._ctx.fillText(GVM2d._word,GVM2d._x,GVM2d._y);    
+            GVM2d._ctx.translate(GVM2d._x, GVM2d._y);
+            GVM2d._ctx.rotate(+GVM2d._theta0 - GVM2d._theta);
+            GVM2d._ctx.translate(-GVM2d._x, -GVM2d._y);
+            GVM2d._word = "";
         }
         if(address == 0366) {
             // start a self-contained cubic Bezier path        
