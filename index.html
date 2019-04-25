@@ -7,6 +7,8 @@
     <input id = "actioninput"/>
     <canvas id = "maincanvas"></canvas>
     <canvas id = "spellcanvas"></canvas>
+<textarea id = "textout"></textarea>
+<img id = "foo"/>
 <script>
 
 
@@ -19,6 +21,7 @@ var spellGVM = new GVM2d(10,100,50,-Math.PI/2,document.getElementById("spellcanv
 
 spellGVM.spellGlyph(newGVM._glyph,spellGVM);
 
+document.getElementById("textout").value = newGVM.bytecode(0220,0247,newGVM);
 
 document.getElementById("actioninput").onkeydown = function(a) {
     var charCode = a.keyCode || a.which;
@@ -44,7 +47,7 @@ document.getElementById("actioninput").onkeypress = function(a) {
     spellGVM.spellGlyph(newGVM._glyph,spellGVM);    
     this.value = "";
 }
-
+document.getElementById("foo").src = newGVM.pngcode(newGVM);
 
 document.getElementById("actioninput").select();
 
@@ -58,6 +61,11 @@ document.getElementById("actioninput").select();
 }
 #actioninput{
     width:1em;
+}
+#foo{
+    border:solid;
+    background-color:#afffaf;
+    width:150px;
 }
 </style>
 </body>

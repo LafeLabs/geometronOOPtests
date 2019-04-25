@@ -143,8 +143,9 @@ function GVM2d(x0,y0,unit,theta0,canvas2d,width,height,bytecode) {
     this._lineWidth = this._style.line0;
 
     GVM2d._viewStep = 50;
-    this.svgString = "";
+    this._svgString = "<svg width=\"" + this._width.toString() + "\" height=\"" + this._height.toString() + "\" viewbox = \"0 0 " + this._width.toString() + " " + this._height.toString() + "\"  xmlns=\"http://www.w3.org/2000/svg\">\n";
 
+    //    this._svgString += "\n<!--\n<json>\n" + JSON.stringify(currentJSON,null,"    ") + "\n</json>\n-->\n";
 
     this._hypercube = [];
     for(var index = 0;index < 1024;index++){
@@ -157,6 +158,22 @@ function GVM2d(x0,y0,unit,theta0,canvas2d,width,height,bytecode) {
             var localglyph = hypercube[index].split(":")[1];
             this._hypercube[localaddress] = localglyph;
         }
+    }
+
+    this.bytecode = function(start,stop,GVM2d) {
+        var jsonarray = [];
+        for(var index = start;index < stop;index++) {
+            if(GVM2d._hypercube[index].length > 1) {
+                var bytecodestring = "0" + index.toString(8) + ":" + GVM2d._hypercube[index];
+                jsonarray.push(bytecodestring); 
+            }
+        }
+        return JSON.stringify(jsonarray,null,"    ");
+    }
+
+    
+    this.pngcode = function(GVM2d) {
+        return GVM2d._canvas2d.toDataURL("image/png");
     }
 
     this.actionSequence = function(glyph,GVM2d) {
@@ -179,9 +196,10 @@ function GVM2d(x0,y0,unit,theta0,canvas2d,width,height,bytecode) {
         GVM2d._ctx.strokeStyle = GVM2d._style.color0;
         GVM2d._ctx.fillStyle = GVM2d._style.fill0;
         GVM2d._ctx.lineWidth = GVM2d._style.line0;
+        GVM2d._svgString = "<svg width=\"" + this._width.toString() + "\" height=\"" + this._height.toString() + "\" viewbox = \"0 0 " + this._width.toString() + " " + this._height.toString() + "\"  xmlns=\"http://www.w3.org/2000/svg\">\n";
         GVM2d.action(0300,GVM2d);
         GVM2d.actionSequence(glyph,GVM2d);
-        
+        GVM2d._svgString += "</svg>";
     }
 
     this.spellGlyph = function(glyph,GVM2d) {
