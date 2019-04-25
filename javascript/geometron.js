@@ -96,8 +96,9 @@ function GVM2d(x0,y0,unit,theta0,canvas2d,width,height,bytecode) {
     this._theta = theta0;
     this._scaleFactor = 2;
     this._thetaStep = Math.PI/2;
+    this._word = "";
+    this._font = "Arial";
 
-    this._cpx1 = x0;
     this._cpy1 = y0;
     this._cpx2 = x0;
     this._cpy2 = y0;
@@ -383,6 +384,10 @@ function GVM2d(x0,y0,unit,theta0,canvas2d,width,height,bytecode) {
 
         }        
 
+        //040-0176: put ASCII on the word stack, to be dumped out to screen via 0365 command
+        if( address >= 040 && address <= 0176){
+            GVM2d._word += String.fromCharCode(address);
+        }
 
         //02xx
         if( (address >= 0200 && address <= 0277) || (address >= 01000 && address <= 01777) ){
@@ -395,7 +400,8 @@ function GVM2d(x0,y0,unit,theta0,canvas2d,width,height,bytecode) {
             GVM2d._side = GVM2d._unit;
             GVM2d._thetaStep = Math.PI/2;
             GVM2d._theta = GVM2d._theta0;
-            GVM2d._scaleFactor = 2;       
+            GVM2d._scaleFactor = 2;      
+            GVM2d._word = "";
         }
         if(address == 0304) {
             GVM2d._thetaStep = Math.PI/2;
@@ -608,8 +614,8 @@ function GVM2d(x0,y0,unit,theta0,canvas2d,width,height,bytecode) {
             GVM2d._ctx.closePath();
         }
         if(address == 0365) {
-  //          ctx.font=side.toString(8) + "px " + myFont;
-    //        ctx.fillText(currentWord,x,y);    
+            GVM2d._ctx.font = GVM2d._side.toString(8) + "px " + GVM2d._font;
+            GVM2d._ctx.fillText(GVM2d._word,GVM2d._x,GVM2d._y);    
         }
         if(address == 0366) {
             // start a self-contained cubic Bezier path        
