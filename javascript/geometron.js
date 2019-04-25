@@ -500,12 +500,24 @@ function GVM2d(x0,y0,unit,theta0,canvas2d,width,height,bytecode) {
             GVM2d._ctx.arc(GVM2d._x, GVM2d._y, GVM2d._ctx.lineWidth, 0, 2 * Math.PI);
             GVM2d._ctx.fill();	
             GVM2d._ctx.closePath();
+            GVM2d._svgString += "<circle cx=\"";
+            GVM2d._svgString += Math.round(GVM2d._x).toString();
+            GVM2d._svgString += "\" cy = \"";
+            GVM2d._svgString += Math.round(GVM2d._y).toString();
+            GVM2d._svgString += "\" r = \"" + GVM2d._ctx.lineWidth.toString() + "\" stroke = \"" + GVM2d._ctx.strokeStyle + "\" stroke-width = \"" + (GVM2d._ctx.lineWidth).toString() + "\" ";
+            GVM2d._svgString += "fill = \"" + GVM2d._ctx.strokeStyle + "\" />\n";	
         }
         if(address == 0341) {
             GVM2d._ctx.beginPath();
             GVM2d._ctx.arc(GVM2d._x, GVM2d._y, GVM2d._side, 0, 2 * Math.PI);
             GVM2d._ctx.closePath();
             GVM2d._ctx.stroke();   
+            GVM2d._svgString += "<circle cx=\"";
+            GVM2d._svgString += Math.round(GVM2d._x).toString();
+            GVM2d._svgString += "\" cy = \"";
+            GVM2d._svgString += Math.round(GVM2d._y).toString();
+            GVM2d._svgString += "\" r = \"" + GVM2d._side.toString() + "\" stroke = \"" + GVM2d._ctx.strokeStyle + "\" stroke-width = \"" + (GVM2d._ctx.lineWidth).toString() + "\" ";
+            GVM2d._svgString += "fill = \"" + GVM2d._ctx.strokeStyle + "\" />\n";			
         }
         if(address == 0342) {
             GVM2d._ctx.beginPath();
@@ -513,6 +525,10 @@ function GVM2d(x0,y0,unit,theta0,canvas2d,width,height,bytecode) {
             GVM2d._ctx.lineTo(GVM2d._x + GVM2d._side*Math.cos(GVM2d._theta),GVM2d._y + GVM2d._side*Math.sin(GVM2d._theta));
             GVM2d._ctx.stroke();		
             GVM2d._ctx.closePath();    
+            var x2 = Math.round(GVM2d._x + GVM2d._side*Math.cos(GVM2d._theta));
+            var y2 = Math.round(GVM2d._y + GVM2d._side*Math.sin(GVM2d._theta));
+            GVM2d._svgString += "    <line x1=\""+Math.round(GVM2d._x).toString()+"\" y1=\""+Math.round(GVM2d._y).toString()+"\" x2=\"" + x2.toString()+"\" y2=\"" + y2.toString()+"\" style=\"stroke:" + GVM2d._ctx.strokeStyle + ";stroke-width:" + (GVM2d._ctx.lineWidth).toString() + "\" />\n"
+    
         }
         if(address == 0343) {
             //arc
