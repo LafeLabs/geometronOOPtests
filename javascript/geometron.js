@@ -142,7 +142,7 @@ function GVM2d(x0,y0,unit,theta0,canvas2d,width,height,bytecode) {
     this._fillStyle = this._style.fill0;
     this._lineWidth = this._style.line0;
 
-    GVM2d._viewStep = 50;
+    this._viewStep = 50;
     this._svgString = "<svg width=\"" + this._width.toString() + "\" height=\"" + this._height.toString() + "\" viewbox = \"0 0 " + this._width.toString() + " " + this._height.toString() + "\"  xmlns=\"http://www.w3.org/2000/svg\">\n";
 
     //    this._svgString += "\n<!--\n<json>\n" + JSON.stringify(currentJSON,null,"    ") + "\n</json>\n-->\n";
