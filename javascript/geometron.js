@@ -79,6 +79,7 @@ function ActionInput(input,drawGVM,spellGVM) {
 }
     
 function GVM2d(x0,y0,unit,theta0,canvas2d,width,height,bytecode) {
+    this._address = 0277;
     this._glyph = "";
     this._width = width;
     this._height = height;
@@ -203,6 +204,17 @@ function GVM2d(x0,y0,unit,theta0,canvas2d,width,height,bytecode) {
         GVM2d._svgString += "</svg>";
     }
 
+    this.saveGlyph = function(GVM2d){
+        var glyphArray = GVM2d._glyph.split(",");
+        var cleanGlyph = "";
+        for(var index = 0;index < glyphArray.length;index++) {
+            if(glyphArray[index] != "0207" && glyphArray[index].length> 1){
+                cleanGlyph += glyphArray[index] + ",";
+            }
+        }
+        GVM2d._hypercube[GVM2d._address] = cleanGlyph;        
+    }
+    
     this.spellGlyph = function(glyph,GVM2d) {
         GVM2d._glyph = glyph;
         var localGlyph = "";
@@ -623,6 +635,7 @@ function GVM2d(x0,y0,unit,theta0,canvas2d,width,height,bytecode) {
             GVM2d._ctx.rotate(+GVM2d._theta0 - GVM2d._theta);
             GVM2d._ctx.translate(-GVM2d._x, -GVM2d._y);
             GVM2d._word = "";
+            GVM2d._ctx.setTransform(1, 0, 0, 1, 0, 0);
         }
         if(address == 0366) {
             // start a self-contained cubic Bezier path        
@@ -668,8 +681,8 @@ hypercube = [
     "045:0325,",
     "046:0327,",
     "047:021,",
-    "050:0212,",
-    "051:0213,",
+    "050:034,",
+    "051:035,",
     "052:0300,",
     "053:0211,",
     "054:032,",

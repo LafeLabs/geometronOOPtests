@@ -46,7 +46,9 @@ document.getElementById("actioninput").onkeypress = function(a) {
     newGVM.cursorAction(localCursorAction,newGVM);   
     spellGVM.spellGlyph(newGVM._glyph,spellGVM);    
     this.value = "";
+    newGVM.saveGlyph(newGVM);
 }
+
 document.getElementById("foo").src = newGVM.pngcode(newGVM);
 
 document.getElementById("actioninput").select();
