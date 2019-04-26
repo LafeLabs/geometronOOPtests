@@ -41,14 +41,14 @@ document.getElementById("actioninput").onkeydown = function(a) {
         newGVM.cursorAction(021,newGVM);   
     }
     if(charCode == 046){
-        //up arrow: previous address
-        newGVM._address--;
+        //up arrow: next
+        newGVM._address++;
         newGVM._glyph = newGVM._hypercube[newGVM._address] + "0207,";
         newGVM.drawGlyph(newGVM._glyph,newGVM);
     }
     if(charCode == 050){
-        //down arrow: next address
-        newGVM._address++;
+        //down arrow: prev address
+        newGVM._address--;
         newGVM._glyph = newGVM._hypercube[newGVM._address] + "0207,";
         newGVM.drawGlyph(newGVM._glyph,newGVM);
 
