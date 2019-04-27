@@ -1,0 +1,36 @@
+<html>
+<head>
+    <script src="javascript/mapfactory.js"></script>
+</head>
+<body>    
+
+    <div id = "mymap"></div>
+
+<script>
+
+
+
+var newmap = new Map("mynewmap");
+var newbox = new MapBox(600,600,newmap,document.getElementById("mymap"));
+//MapLink(x,y,w,h,angle,text,href,url,type)
+var drakeimg = new MapLink(0.2,0.2,0.5,1,0,"","","http://geometron.000webhostapp.com/uploadimages/image27.jpg","image");
+newmap._array.push(drakeimg);
+var toptext = new MapLink(0.5,0.25,0.15,1,0,"TOP","","","text");
+newmap._array.push(toptext);
+var bottomtext = new MapLink(0.5,.5,0.15,1,0,"BOTTOM","","","text");
+newmap._array.push(bottomtext);
+
+newbox.draw(newbox);
+
+</script>
+<style>
+#mymap{
+    border:solid;
+    position:relative;
+}
+#mymap div{
+    border:solid;
+}
+</style>
+</body>
+</html>
