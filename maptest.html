@@ -17,8 +17,10 @@ var drakeimg = new MapLink(0.2,0.2,0.5,1,0,"","","http://geometron.000webhostapp
 newmap._array.push(drakeimg);
 var toptext = new MapLink(0.5,0.25,0.15,1,0,"TOP","","","text");
 newmap._array.push(toptext);
-var bottomtext = new MapLink(0.5,.5,0.15,1,0,"BOTTOM","","","text");
+var bottomtext = new MapLink(0.5,.5,0.15,1,0,"<span style =\"color:red\">BOTTOM</span>","","","text");
 newmap._array.push(bottomtext);
+var arrow = new MapLink(0.4,0.4,0.1,1,180,"","","http://www.cherrytreemaryland.xyz/symbol/svg/svg1556330629.svg","image");
+newmap._array.push(arrow);
 
 newbox.draw(newbox);
 
