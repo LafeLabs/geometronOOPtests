@@ -174,6 +174,13 @@ function GVM2d(x0,y0,unit,theta0,canvas2d,width,height,bytecode) {
         return JSON.stringify(jsonarray,null,"    ");
     }
 
+    this.importbytecode = function(bytecode,GVM2d){
+        for(var index =0;index < bytecode.length;index++){
+            var localaddress = parseInt(bytecode[index].split(":")[0],8);
+            var localglyph = bytecode[index].split(":")[1];
+            GVM2d._hypercube[localaddress] = localglyph;
+        }
+    }
     
     this.pngcode = function(GVM2d) {
         return GVM2d._canvas2d.toDataURL("image/png");
@@ -254,7 +261,7 @@ function GVM2d(x0,y0,unit,theta0,canvas2d,width,height,bytecode) {
         if(action < 040) {
             GVM2d.action(action,GVM2d);
         }
-        if(action > 037 && action <= 01777) {
+        if(action > 037 && action <= 01777 && action != GVM2d._address) {
             var glyphSplit = currentGlyph.split(",");
             currentGlyph = "";
             for(var index = 0;index < glyphSplit.length;index++){

@@ -59,6 +59,11 @@ document.getElementById("actioninput").onkeydown = function(a) {
 
 }
 
+
+bar = [];
+bar.push("0222:0341,0333,0341,");
+newGVM.importbytecode(bar,newGVM);
+
 document.getElementById("actioninput").onkeypress = function(a) {
     var charCode = a.keyCode || a.which;
     var localCursorAction = parseInt(newGVM._hypercube[charCode],8);     

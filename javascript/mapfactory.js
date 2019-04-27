@@ -1,13 +1,13 @@
 
 
 function MapBox(w,h,map,div) {
-    this.w = w;
-    this.h = h;
-    this.map = map; 
-    this.div = div; 
+    this.w = w;//width of div element map will be drawn in
+    this.h = h;//height of div element
+    this.map = map;//Map object, which has a name and an array of MapLinks
+    this.div = div; //div element in document
 
-    this.div.style.width = this.w + "px";
-    this.div.style.height = this.h + "px";
+    this.div.style.width = this.w + "px"; //set width of div
+    this.div.style.height = this.h + "px";//set height of div
 
 
     this.draw = function(MapBox) {
