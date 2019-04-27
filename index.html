@@ -19,13 +19,13 @@ var newGVM = new GVM2d(200,200,50,-Math.PI/2,document.getElementById("maincanvas
 
 //newGVM.drawGlyph("0200,0333,0341,0350,0335,0101,0103,0101,0102,0365,0207,",newGVM);
 
-newGVM._address = 0220;
-newGVM._glyph = newGVM._hypercube[newGVM._address];
-newGVM.drawGlyph(newGVM._glyph,newGVM);
+newGVM.address = 0220;
+newGVM.glyph = newGVM.hypercube[newGVM.address];
+newGVM.drawGlyph(newGVM.glyph,newGVM);
 
 var spellGVM = new GVM2d(10,100,50,-Math.PI/2,document.getElementById("spellcanvas"),200,200,hypercube);
 
-spellGVM.spellGlyph(newGVM._glyph,spellGVM);
+spellGVM.spellGlyph(newGVM.glyph,spellGVM);
 
 document.getElementById("textout").value = newGVM.bytecode(0220,0247,newGVM);
 
@@ -43,19 +43,19 @@ document.getElementById("actioninput").onkeydown = function(a) {
     }
     if(charCode == 046){
         //up arrow: next
-        newGVM._address++;
-        newGVM._glyph = newGVM._hypercube[newGVM._address] + "0207,";
-        newGVM.drawGlyph(newGVM._glyph,newGVM);
+        newGVM.address++;
+        newGVM.glyph = newGVM.hypercube[newGVM.address] + "0207,";
+        newGVM.drawGlyph(newGVM.glyph,newGVM);
     }
     if(charCode == 050){
         //down arrow: prev address
-        newGVM._address--;
-        newGVM._glyph = newGVM._hypercube[newGVM._address] + "0207,";
-        newGVM.drawGlyph(newGVM._glyph,newGVM);
+        newGVM.address--;
+        newGVM.glyph = newGVM.hypercube[newGVM.address] + "0207,";
+        newGVM.drawGlyph(newGVM.glyph,newGVM);
 
     }
 
-    spellGVM.spellGlyph(newGVM._glyph,spellGVM);    
+    spellGVM.spellGlyph(newGVM.glyph,spellGVM);    
 
 }
 
@@ -66,9 +66,9 @@ newGVM.importbytecode(bar,newGVM);
 
 document.getElementById("actioninput").onkeypress = function(a) {
     var charCode = a.keyCode || a.which;
-    var localCursorAction = parseInt(newGVM._hypercube[charCode],8);     
+    var localCursorAction = parseInt(newGVM.hypercube[charCode],8);     
     newGVM.cursorAction(localCursorAction,newGVM);   
-    spellGVM.spellGlyph(newGVM._glyph,spellGVM);    
+    spellGVM.spellGlyph(newGVM.glyph,spellGVM);    
     this.value = "";
     newGVM.saveGlyph(newGVM);
 }
